@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const content = doc.body.innerText.replace(/\n/g, '\n\n');
 
                 mainArea.value = content;
+		mainArea.scrollTop = 0;
                 sysMsg.textContent = `Loaded: ${url}`;
             })
             .catch(error => {
