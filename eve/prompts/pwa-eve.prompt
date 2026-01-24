@@ -1,0 +1,37 @@
+The goal is to write up the reference manual for using the progressive web application (PWA), named "eve". The plan is to use the following content as the main guideline:
+*  Introduction
+** Motivation for the Application
+```
+You just got a powerful new laptop or gaming PC. Either this being the Macbook Air or Pro, Mini Mac, or Nvidia RTX equipped Windows based gaming PC. Or maybe lucky enough to get a 16GB Raspberry Pi 5.
+
+And now you are wondering: What can I run on this great hardware?
+
+You are non-stop hearing about AI and AI PCs. So can I really use my great new hardware for AI in addition to those terrific AAA games?
+
+Is there an easy and straight forward way to start using the AI right away? The answer is yes! Eve is the app that can get you started using AI in no time. 
+```
+** LLM & Ollama
+*** Short history of current AI enabler tech: 
+**** Short description and history of LLM or Large Language Model
+**** Short intro to Ollama
+```
+Provide a short explanation of what is Ollama and how to install it and use it.
+Provide references.
+```
+* Eve
+** What is it and how to use it
+```
+Eve is a progressive web application (PWA)
+You can start it as you would visit any other web site in your browser: https://pub.head2toes.org/pwa/eve/index.html
+```
+* Application Main Features
+** Parameters Definition
+** Session History
+** New Session
+** Saving the sessions to file system
+** Message Edit
+** Sending a Message List to LLM
+** Keeping the Conversation Alive
+
+
+

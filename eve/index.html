@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eve - Ollama Chat</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>Eve</h1>
+      <div class="session-info">
+        <span id="current-session">No active session</span>
+      </div>
+    </header>
+    <header class="app-header">
+      <div class="session-info">
+        <button id="new-session-btn" class="btn">New Session</button>
+        <button id="dup-session-btn" class="btn">Dup Session</button>
+        <button id="new-session-dwnl-btn" class="btn">Download All</button>
+        <button id="clear-session-btn" class="btn">Clear All</button>
+	<span><label for="fileinput2" class="btn">Load All</label><input class="btn-hidden" type="file" id="fileinput2"/></span>
+      </div>
+    </header>
+
+    <div class="main-content">
+      <div class="sidebar">
+        <div class="parameter-list">
+          <h3>Parameters</h3>
+
+          <div class="parameter-group">
+            <label>API Endpoint</label>
+            <div class="searchable-list" id="endpoint-list">
+              <!-- Endpoint options will be added here -->
+            </div>
+            <div class="value-display">
+              <div class="current-value" id="current-endpoint">http://localhost:11434/api/chat</div>
+              <button class="edit-btn" id="edit-endpoint-btn">Edit</button>
+              <input type="text" id="new-endpoint-input" class="hidden">
+            </div>
+          </div>
+
+         <div class="parameter-group">
+            <label>Model</label>
+            <div class="searchable-list" id="model-list">
+              <!-- Model options will be added here -->
+            </div>
+            <div class="value-display">
+              <div class="current-value" id="current-model">Select model...</div>
+              <button class="edit-btn" id="edit-model-btn">Edit</button>
+              <input type="text" id="new-model-input" class="hidden">
+            </div>
+          </div>
+
+          <div class="parameter-group">
+            <label>Context Size</label>
+            <div class="searchable-list" id="context-list">
+              <!-- Context options will be added here -->
+            </div>
+            <div class="value-display">
+              <div class="current-value" id="current-context">32000</div>
+              <button class="edit-btn" id="edit-context-btn">Edit</button>
+              <input type="text" id="new-context-input" class="hidden">
+            </div>
+          </div>
+        </div>
+
+        <div class="session-list">
+          <h3>Sessions</h3>
+          <div class="session-item active" data-session-id="current">
+            <div class="session-header">
+              <a onclick="switchSession('current')">
+              <span>Current Session</span>
+              <span class="session-date">Now</span>
+              </a>
+            </div>
+            <div class="session-messages">
+              <div class="message-list-container">
+                <div class="message-list" id="current-message-list">
+                  <!-- Messages will be added here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="search-container">
+          <input type="text" id="global-search" placeholder="Search all messages...">
+          <button id="search-btn" class="btn"><i class="fas fa-search"></i></button>
+        </div>
+      </div>
+
+      <div class="chat-area">
+        <div class="message-input">
+          <textarea id="user-message" placeholder="Type your message here..."></textarea>
+          <div class="input-controls">
+            <button id="add-btn" class="btn">Add</button>
+            <button id="send-btn" class="btn">Send</button>
+            <button id="clear-btn" class="btn">Clear</button>
+	    <span><label for="fileinput" class="btn" >Load</label><input class="btn-hidden" type="file" id="fileinput"/></span>
+          </div>
+        </div>
+
+        <div class="message-history">
+          <div id="message-display">
+            <!-- Messages will be displayed here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="history-modal" id="history-modal">
+      <div class="modal-content">
+        <h3>Parameter Change History</h3>
+        <div class="history-list" id="history-list">
+          <!-- History items will be added here -->
+        </div>
+        <button class="btn" id="close-history-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/storage.js"></script>
+  <script src="scripts/api.js"></script>
+  <script src="scripts/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+{
+  "current": {
+    "id": "current",
+    "name": "Current Session",
+    "date": "2026-01-17T05:22:21.233Z",
+    "parameters": {
+      "model": [
+        {
+          "value": "ministral-3:8b",
+          "timestamp": "2026-01-22T19:34:45.028Z"
+        },
+        {
+          "value": "nomic-embed-text:latest",
+          "timestamp": "2026-01-22T19:34:45.028Z"
+        },
+        {
+          "value": "gemma3:12b",
+          "timestamp": "2026-01-22T19:34:45.028Z"
+        },
+        {
+          "value": "gemma3:4b",
+          "timestamp": "2026-01-22T19:34:45.028Z"
+        }
+      ],
+      "endpoint": [
+        {
+          "value": "http://localhost:11434",
+          "timestamp": "2026-01-17T05:22:21.254Z"
+        },
+        {
+          "value": "http://localhost:8000",
+          "timestamp": "2026-01-17T05:22:21.254Z"
+        },
+        {
+          "value": "http://192.168.1.84:8000",
+          "timestamp": "2026-01-17T05:22:21.254Z"
+        },
+        {
+          "value": "http://ssd120:8000",
+          "timestamp": "2026-01-22T19:32:22.527Z"
+        }
+      ],
+      "context": [
+        {
+          "value": "4096",
+          "timestamp": "2026-01-17T05:22:21.254Z"
+        },
+        {
+          "value": "32000",
+          "timestamp": "2026-01-17T05:22:21.254Z"
+        }
+      ]
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "You are a writing assistant capable of writing up text drafts based on the following guidelines."
+      },
+      {
+        "role": "user",
+        "content": "The goal is to write up the reference manual for using the progressive web application (PWA), named \"eve\". Use the following content as the main guideline:\n*  Introduction\n** Motivation for the Application\n```\nYou just got a powerful new laptop or gaming PC. Either this being the Macbook Air or Pro, Mini Mac, or Nvidia RTX equipped Windows based gaming PC. Or maybe lucky enough to get a 16GB Raspberry Pi 5.\n\nAnd now you are wondering: What can I run on this great hardware?\n\nYou are non-stop hearing about AI and AI PCs. So can I really use my great new hardware for AI in addition to those terrific AAA games?\n\nIs there an easy and straight forward way to start using the AI right away? The answer is yes! Eve is the app that can get you started using AI in no time. \n```"
+      },
+      {
+        "role": "assistant",
+        "content": "# **Eve – Progressive Web Application (PWA) Reference Manual**\n*Your Gateway to AI on High-Performance Hardware*\n\n---\n\n## **1. Introduction**\nWelcome to **Eve**, your all-in-one Progressive Web Application (PWA) designed to unlock the full potential of your cutting-edge hardware—whether it’s a **MacBook Pro/Air/Mini**, **NVIDIA RTX-powered gaming PC**, or even a **16GB Raspberry Pi 5**. With Eve, you can seamlessly integrate AI into your workflow without the complexity of traditional software setups.\n\nThis manual will guide you through installation, setup, and usage of Eve, ensuring you can start leveraging AI capabilities right away—from AI-powered productivity tools to creative applications and beyond.\n\n---\n\n## **2. Motivation for the Application**\n### **Why Eve?**\nYou’ve just invested in top-tier hardware, but now you’re left wondering: *How can I make the most of it?* The answer lies in **AI**, but traditional AI tools often require steep learning curves, fragmented workflows, or even dedicated AI PCs. Eve eliminates these barriers by providing:\n\n- **Instant AI Access**: No need for complex installations—Eve runs as a **PWA**, meaning you can launch it directly from your browser with minimal setup.\n- **Hardware Optimization**: Whether you’re on a **Mac, Windows, or Raspberry Pi**, Eve adapts to your system’s capabilities, ensuring smooth AI performance.\n- **Beginner-Friendly**: Designed for users who want to explore AI without deep technical knowledge. Start small, scale as you grow.\n- **Versatility**: From **AI-assisted coding** to **creative design tools**, Eve integrates AI into your daily tasks effortlessly.\n\n### **Who Is This For?**\n- **Gamers & Creators**: Maximize your RTX/GPU power for AI-enhanced gaming, art, or video editing.\n- **Developers & Engineers**: Use AI to debug code, generate prototypes, or analyze data faster.\n- **Students & Professionals**: Leverage AI for research, summaries, or automation without a steep learning curve.\n- **Tech Enthusiasts**: Experiment with AI on **Raspberry Pi 5** or other edge devices.\n\n---\n*(Next sections will cover: Installation, Core Features, Getting Started, Advanced Usage, and Troubleshooting. Would you like me to proceed with drafting those as well?)*"
+      }
+    ],
+    "selections": {
+      "model": 0,
+      "endpoint": 3
+    }
+  }
+}

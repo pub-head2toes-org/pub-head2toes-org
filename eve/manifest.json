@@ -1,0 +1,21 @@
+{
+  "name": "Eve - Ollama Chat",
+  "short_name": "Eve",
+  "description": "Progressive Web Application for interacting with Ollama LLM via REST API",
+  "start_url": "/eve",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#333333",
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
