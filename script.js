@@ -22,31 +22,45 @@ document.addEventListener('DOMContentLoaded', function() {
     const mainArea = document.getElementById('main_area');
 
     // Set initial content
-    cmdLine.value = "CMD> ";
+    cmdLine.value = "> ";
     sysMsg.textContent = "System ready";
     mainArea.value = "Welcome to the Retro Mainframe Terminal\n\nType 'help' for available commands\n";
+
+    // Handle hypertext links
+    mainArea.addEventListener('click', function(e) {
+      const lineIndex = mainArea.value.substr(0, mainArea.selectionStart).split("\n").length-1;
+      const lineText = mainArea.value.split("\n")[lineIndex];
+      showLinks(lineText);
+    });
 
     // Handle key presses in command line
     cmdLine.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
-            const command = cmdLine.value.trim().toLowerCase();
+            const command = cmdLine.value.trim().toLowerCase().replace("> ", "");
 
             // Simple command handling
             if (command === 'help') {
-                sysMsg.textContent = "Available commands: [home], [shorts], [pwa], [almanac]";
+                sysMsg.textContent = "Available commands: [clear], [ls], [load]";
             } else if (command === 'clear') {
                 mainArea.value = "";
                 sysMsg.textContent = "Screen cleared";
+            } else if (command.startsWith('ls')) {
+                const files = getFiles();
+                sysMsg.textContent = `Files: ${files.join(' ')}`;
             } else if (command.startsWith('load ')) {
                 const page = command.substring(5).trim();
-                loadPage(page);
+                if (getFiles().includes(page)) {
+                  loadPage(page);
+                } else {
+                  sysMsg.textContent = `Unknown page: ${page}`;
+                }
             } else {
                 sysMsg.textContent = `Unknown command: ${command}`;
             }
 
             // Reset command line
-            cmdLine.value = "CMD> ";
+            cmdLine.value = "> ";
             setTimeout(() => cmdLine.focus(), 100);
         } else if (e.key === 'Backspace') {
             // Handle backspace for the cursor position
@@ -57,6 +71,44 @@ document.addEventListener('DOMContentLoaded', function() {
             cmdLine.selectionEnd = cursorPos - 1;
         }
     });
+
+  function getFiles (){
+    const files = [];
+    menuItems.forEach(item => {
+      files.push(item[1]);
+    });
+    return files; 
+  }
+
+  function showLinks (lineText) {
+    const links = getLinks(lineText);
+    if (links.length > 0) {
+      document.getElementById("foot-container").innerHTML = `<a href="${links[0].linkURI}" target="blank">${links[0].linkText}</a>`;
+    } else {
+      document.getElementById("foot-container").innerHTML = `${lineText.substr(0,20)}...`;
+    }
+  }
+function getLinks(textLine) {
+    // Regular expression to match Markdown links in the format [text](url)
+    const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    const links = [];
+    let match;
+
+    while ((match = linkRegex.exec(textLine)) !== null) {
+        const linkText = match[1].trim();
+        const linkURI = match[2].trim();
+
+        // Only add if both text and URI are non-empty
+        if (linkText && linkURI) {
+            links.push({
+                linkText,
+                linkURI
+            });
+        }
+    }
+
+    return links;
+}
 
     // Load page content
     function loadPage(url) {
@@ -72,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const doc = new DOMParser().parseFromString(html, 'text/html');
                 const content = doc.body.innerText.replace(/\n/g, '\n\n');
 
-                mainArea.value = content;
+                mainArea.value = html; //content;
 		mainArea.scrollTop = 0;
                 sysMsg.textContent = `Loaded: ${url}`;
             })
