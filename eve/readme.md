@@ -101,19 +101,15 @@ Once Ollama is installed and a model is pulled, you can launch **Eve** via your 
 
 ### **Option 1: Install Eve as a PWA (Progressive Web App)**
 1. **Open Eve in Your Browser**:
-   - Visit the Eve PWA URL (e.g., `https://your-eve-app.com` or a local dev server if self-hosted).
+   - Visit the Eve PWA URL (e.g., `https://git.head2toes.org/eve` or a local dev server if self-hosted).
    - Click **"Install"** (Chrome/Firefox/Edge) to add Eve to your home screen.
 
 2. **First-Time Setup**:
-   - Eve will auto-detect Ollama running on `localhost:11434`.
-   - If prompted, confirm the connection.
+   - Run the proxy server in your local machine
+   - One example is the pure Node JS proxy server: [Example Proxy Server](https://stackoverflow.com/questions/20351637/how-to-create-a-simple-http-proxy-in-node-js)
 
-### **Option 2: Run Eve via Terminal (CLI Mode)**
-If you prefer a command-line interface:
-```bash
-ollama run gemma3 --eve
-```
-*(Note: This is a hypothetical CLI flag—adjust based on Eve’s actual implementation.)*
+### **Option 2: Run Eve Hosted on Local Machine 
+*(Note: Need to elaborate on this)*
 
 ---
 

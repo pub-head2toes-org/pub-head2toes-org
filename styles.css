@@ -17,6 +17,10 @@ body {
     background-size: 200px 200px;
 }
 
+a {
+    color: #0f0;
+}
+
 .terminal {
     width: 80%;
     max-width: 800px;
@@ -53,6 +57,7 @@ body {
 
 .foot-bar {
     background-color: #000;
+    color: #0f0;
     padding: 5px 10px;
     border-top: 1px solid #0f0;
     overflow-x: auto;
