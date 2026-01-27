@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cmdLine = document.getElementById('cmd_line_area');
     const sysMsg = document.getElementById('sys_msg');
     const mainArea = document.getElementById('main_area');
+    const footerArea = document.getElementById('foot-container');
 
     // Set initial content
     cmdLine.value = "> ";
@@ -83,9 +84,9 @@ document.addEventListener('DOMContentLoaded', function() {
   function showLinks (lineText) {
     const links = getLinks(lineText);
     if (links.length > 0) {
-      document.getElementById("foot-container").innerHTML = `<a href="${links[0].linkURI}" target="blank">${links[0].linkText}</a>`;
+      footerArea.innerHTML = `<a href="${links[0].linkURI}" target="blank">${links[0].linkText}</a>`;
     } else {
-      document.getElementById("foot-container").innerHTML = `${lineText.substr(0,20)}...`;
+      footerArea.innerHTML = `${lineText.substr(0,20)}...`;
     }
   }
 function getLinks(textLine) {
@@ -127,6 +128,7 @@ function getLinks(textLine) {
                 mainArea.value = html; //content;
 		mainArea.scrollTop = 0;
                 sysMsg.textContent = `Loaded: ${url}`;
+                footerArea.innerHTML = '[1]'
             })
             .catch(error => {
                 sysMsg.textContent = `Error loading ${url}: ${error.message}`;
