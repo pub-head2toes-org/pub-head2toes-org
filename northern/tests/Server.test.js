@@ -373,6 +373,13 @@ describe('file system namespace', () => {
         assert.match(await res.text(), /keyboard/i);
     });
 
+    it('serves the console scripts as no-cache, so an edit reaches the browser', async () => {
+        const res = await get('/fs/get/js/cli_v2.js');
+
+        assert.strictEqual(res.headers.get('cache-control'), 'no-cache');
+        assert.strictEqual(res.headers.get('content-type'), 'application/javascript');
+    });
+
     it('serves binary assets unmangled', async () => {
         const res = await get('/fs/get/pwa/lol/icon-192.png');
         const body = Buffer.from(await res.arrayBuffer());

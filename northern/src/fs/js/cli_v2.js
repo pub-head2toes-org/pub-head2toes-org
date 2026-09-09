@@ -136,6 +136,35 @@ function runCursor(){
   */
 }
   
+// The server reads the LIKE pattern as pathname + ?search, so a '%' the user
+// wrote has to travel in the query, where it survives as %25. Left in the
+// pathname it is a malformed escape that strict proxies answer with a 400.
+function searchUrl(pattern){
+  let at = pattern.indexOf('%');
+  let path = at === -1 ? pattern : pattern.slice(0, at);
+  let wildcard = at === -1 ? '%' : pattern.slice(at);
+  if (!wildcard.endsWith('%')){
+    wildcard = wildcard + '%';
+  }
+  return `${path}?search=${encodeURIComponent(wildcard)}`;
+}
+
+function matchUrl(path, keyword){
+  return `${path}?keyword=${encodeURIComponent('%' + keyword + '%')}`;
+}
+
+// ?keyword has to read the values to filter on them, but the console lists
+// hits the way search does: keys and metadata, no values.
+function withoutValue(row){
+  let { value, ...rest } = row;
+  return rest;
+}
+
+function byPath(a, b){
+  if (a.path === b.path) return 0;
+  return a.path < b.path ? -1 : 1;
+}
+
 function parseTokens(tokens){
   let footer = document.getElementById("footer");
   footer.innerHTML = `cmd: ${tokens[0]}`;
@@ -159,10 +188,14 @@ function parseTokens(tokens){
   }
  
   if ('search' == tokens[0]){
-    fetch(`${tokens[1]}?search=%`).then(function(response) {
+    if (tokens.length < 2){
+      footer.innerHTML = 'search: Missing param. Ex. search /path or search /%keyword';
+      return;
+    }
+    fetch(searchUrl(tokens[1])).then(function(response) {
         response.text().then(function (text) {
           	let jsonSearchRes = JSON.parse(text);
-          	jsonSearchRes.sort((a,b)=>{a>b});
+          	jsonSearchRes.sort(byPath);
             textedit.setText(myCodeMirror, JSON.stringify(jsonSearchRes, null, 2), {label: 'search', caret: 0})
         });
     }).catch(function(error) {
@@ -170,7 +203,7 @@ function parseTokens(tokens){
     });
   }
     if ('last' == tokens[0]){
-    fetch(`${tokens[1]}?search=%`).then(function(response) {
+    fetch(searchUrl(tokens[1])).then(function(response) {
         response.text().then(function (text) {
             let json = JSON.parse(text)
             let lastDate = new Date(Number(json[json.length-1].path.slice(-13))) 
@@ -267,9 +300,10 @@ function parseTokens(tokens){
       footer.innerHTML = 'match: Missing param. Ex. match path keyword';
       return;
     }
-    fetch(`${tokens[1]}?search=%&kwd=${tokens[2]}`).then(function(response) {
+    fetch(matchUrl(tokens[1], tokens[2])).then(function(response) {
         response.text().then(function (text) {
-            textedit.setText(myCodeMirror, JSON.stringify(JSON.parse(text), null, 2), {label: 'match', caret: 0})
+          	let jsonMatchRes = JSON.parse(text).map(withoutValue);
+            textedit.setText(myCodeMirror, JSON.stringify(jsonMatchRes, null, 2), {label: 'match', caret: 0})
         });
     }).catch(function(error) {
         console.log('Looks like there was a problem: \n', error);

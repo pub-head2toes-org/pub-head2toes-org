@@ -150,6 +150,17 @@ describe('Render.renderFromFS / renderStatic', () => {
         assert.deepStrictEqual(res.buffer, fs.readFileSync(path.join(REPO_ROOT, 'src/fs/pwa/lol/icon-192.png')));
     });
 
+    // The console edits its own scripts, so a browser holding a cached copy of
+    // cli_v2.js runs commands the server no longer implements.
+    it('tells the browser not to serve /fs/get from cache without asking', async () => {
+        const res = new MockRes();
+        render.renderFromFS('/fs/get/js/cli_v2.js', res);
+        await res.done;
+
+        assert.strictEqual(res.headers['Cache-Control'], 'no-cache');
+        assert.strictEqual(res.contentType, 'application/javascript');
+    });
+
     it('serves /static/<file> from src/static', async () => {
         const res = new MockRes();
         render.renderStatic('/static/prj-cat-128x128.png', res);

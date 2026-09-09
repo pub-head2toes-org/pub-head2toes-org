@@ -42,6 +42,9 @@ export default class Render {
     }
 
     renderFromFS(path, res){
+        // The app edits its own pages and scripts in place, so a cached copy is
+        // a stale copy. Nothing here carries a validator to revalidate against.
+        res.setHeader('Cache-Control', 'no-cache');
         let data = {};
         data.filePath = pathModule.join(__dirname + "/../" + path.replace('/fs/get','/fs/'));
         data.value = fs.readFileSync (pathModule.join(__dirname + "/../" + path.replace('/fs/get','/fs/')));

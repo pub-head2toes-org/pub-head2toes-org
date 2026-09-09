@@ -8,6 +8,59 @@ const JS_DIR = path.join(import.meta.dirname, '..', '..', 'src', 'fs', 'js');
 const read = name => fs.readFileSync(path.join(JS_DIR, name), 'utf8');
 
 /**
+ * Loads cli_v2.js with a DOM stub and a recording fetch, so the command line
+ * can be driven and the request it puts on the wire inspected.
+ */
+export function loadCli({ respond = () => '[]' } = {}) {
+    const elements = {};
+    ['clip', 'text', 'text2', 'footer'].forEach(id => {
+        elements[id] = { id, value: '', innerHTML: '', addEventListener() {} };
+    });
+
+    const requests = [];
+    let wrote = () => {};
+
+    const sandbox = {
+        console: { log() {} },
+        document: {
+            activeElement: null,
+            getElementById: id => elements[id] || null
+        },
+        fetch(url) {
+            requests.push(url);
+            return Promise.resolve(respond(url))
+                .then(text => ({ text: () => Promise.resolve(String(text)) }));
+        },
+        textedit: {
+            setText(element, text) { element.value = text; wrote(); }
+        }
+    };
+    sandbox.window = { addEventListener() {} };
+
+    const context = vm.createContext(sandbox);
+    vm.runInContext(read('cli_v2.js'), context, { filename: 'cli_v2.js' });
+    vm.runInContext("myCodeMirror = document.getElementById('text');" +
+        "myCodeMirror2 = document.getElementById('text2');", context);
+
+    return {
+        element: id => elements[id],
+        requests,
+        /** Runs a command line the way Ctrl+Enter on the clip buffer does. */
+        async run(line) {
+            const issued = requests.length;
+            const written = new Promise(resolve => { wrote = resolve; });
+            vm.runInContext(`parseTokens(${JSON.stringify(line.split(' '))})`, context);
+            // A command that rejects its arguments never reaches a buffer.
+            if (requests.length === issued) return;
+            await Promise.race([written, new Promise(resolve => setTimeout(resolve, 2000))]);
+        },
+        /** Calls one of the URL builders directly. */
+        call: (name, ...args) =>
+            vm.runInContext(`${name}(${args.map(a => JSON.stringify(a)).join(', ')})`, context)
+    };
+}
+
+/**
  * A textarea, as far as history.js and textedit.js are concerned: a value, a
  * selection, focus, and listeners. Enough to run the real scripts against.
  */

@@ -36,7 +36,7 @@ The whole API is "the URL path is the key, the request body is the value".
 | B2 | Write requests without an `ssid` cookie are redirected to `/fs/get/reg/Reg.html#<path>`; the registration pages themselves are exempt so a new user can sign up | `Server.js:109-112` | `Server.test.js` › registration gate |
 | B3 | `POST` creates, `PUT` updates; the body is buffered and dispatched on `end` | `Server.js:34-71, 118-122` | `Server.test.js` › POST then GET a key, PUT a key |
 | B5 | `GET /sub/<key>` opens a server-sent-event subscription | `Server.js:124-125` | `Server.test.js` › SSE pub/sub |
-| B6 | `GET /fs/get/<path>` serves files from `src/fs` | `Server.js:126-127`, `Render.js:44` | `Render.test.js`, `Server.test.js` › file system namespace |
+| B6 | `GET /fs/get/<path>` serves files from `src/fs`, as `Cache-Control: no-cache` — the app edits its own pages and scripts in place, and sends no validator to revalidate against | `Server.js:126-127`, `Render.js:44` | `Render.test.js`, `Server.test.js` › file system namespace |
 | B7 | `GET /static/<path>` serves files from `src/static` | `Server.js:128-129`, `Render.js:53` | same |
 | B8 | `GET /mp4/get/<path>` streams video with HTTP range support | `Server.js:130-131`, `Render.js:67` | `Render.test.js` › renderMP4 |
 | B9 | Any other `GET` is a database read or search | `Server.js:132-134`, `Render.js:8` | `Render.test.js` › render query dispatch, `Server.test.js` › search over HTTP |
@@ -120,7 +120,7 @@ for exactly that reason.
 
 | # | Feature | Code | Tests |
 | --- | --- | --- | --- |
-| I1 | Console + editor: a command line (`get`, `put`, `put2`, `post`, `search`, `match`, `last`, `open`, `eval`, `llm`, `llmo`, `s`) over the Fetch API, with a two-pane editor, an on-screen keyboard, Ctrl+Enter execution and undo/redo (I7) | `fs/keyboard.html`, `fs/js/cli_v2.js`, `fs/js/keyboard.js`, `fs/js/keyboard-helper.js` |
+| I1 | Console + editor: a command line (`get`, `put`, `put2`, `post`, `search`, `match`, `last`, `open`, `eval`, `llm`, `llmo`, `s`) over the Fetch API, with a two-pane editor, an on-screen keyboard, Ctrl+Enter execution and undo/redo (I7). `search <pattern>` takes a path that may carry a `%` wildcard (`search /%game`), which travels percent encoded in the query (D5); `match <path> <keyword>` filters on the value (D7) but lists the same columns as `search`, without the values | `fs/keyboard.html`, `fs/js/cli_v2.js`, `fs/js/keyboard.js`, `fs/js/keyboard-helper.js` | `cli.test.js` |
 | I2 | Registration and sign-in: generates the ECDSA key pair, stores it locally with the user name, builds the `ssid` cookie, registers the ID Card, and downloads it as a file — optionally AES-256 encrypted under a passphrase (see J below) | `fs/reg/Reg.html`, `fs/reg/idcard.js`, `fs/reg/oo.js`, `fs/Signin.html`, `fs/Logout.html` |
 | I3 | Admin console, sharing pages, home page, manifesto, RSS feed | `fs/AdminConsole.html`, `fs/Share.html`, `fs/Shared.html`, `fs/home.html`, `fs/rss.xml` |
 | I4 | PWAs backed by the SSE pub/sub: `lol` (multiplayer map game with bots), `rummy`, `joint` — each with a manifest, service worker and offline page | `fs/pwa/lol/*`, `fs/pwa/rummy/*`, `fs/pwa/joint/*` |

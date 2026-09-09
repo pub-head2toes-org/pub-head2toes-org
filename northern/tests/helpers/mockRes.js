@@ -14,14 +14,22 @@ export default class MockRes extends Writable {
         super();
         this.statusCode = null;
         this.headers = null;
+        this._headers = {};
         this.chunks = [];
         this.ended = false;
         this.done = new Promise(resolve => { this._resolveDone = resolve; });
     }
 
+    setHeader(name, value) {
+        this._headers[name] = value;
+        return this;
+    }
+
+    // node merges what setHeader put down with what writeHead passes,
+    // and lets writeHead win on a clash.
     writeHead(statusCode, headers) {
         this.statusCode = statusCode;
-        this.headers = headers;
+        this.headers = { ...this._headers, ...headers };
         return this;
     }
 
